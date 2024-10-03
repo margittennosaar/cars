@@ -110,7 +110,7 @@ const displayTable = () => {
         row.insertCell(-1).textContent = `${price.toFixed(2)}€`;
 
         const discountedPrice = car.isEligibleForDiscount()
-            ? `$${car.getDiscountedPrice().toFixed(2)}`
+            ? `€${car.getDiscountedPrice().toFixed(2)}`
             : "No Discount";
         row.insertCell(-1).textContent = discountedPrice;
 
@@ -148,7 +148,7 @@ const searchCar = (e) => {
             <p>Model: ${foundCar.model}</p>
             <p>Owner: ${foundCar.owner}</p>
             <p>Year: ${foundCar.year}</p>
-            <p>Original Price: $${originalPrice}</p>
+            <p>Original Price: €${originalPrice}</p>
             <p>Discounted Price: ${discountedPrice}</p>
             <p>Color: ${foundCar.color}</p>
         `;
