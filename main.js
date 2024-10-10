@@ -11,21 +11,28 @@ class Car {
         this.maker = maker;
         this.model = model;
         this.owner = owner;
-        this.price = parseFloat(price);
+        this.price = parseFloat(price); 
+        // converts to float (number with decimals)
         this.color = color;
         this.year = parseInt(year);
+        // converts to integer
     }
 
-    getCarAge() {
+    // following 3 method functions are part of class Car object constructor:
+
+    getCarAge() {   // function for car's age
         const currentYear = new Date().getFullYear();
+        // declaring variable for current year, using new Date() -constructor and getFullYear() -method
         return currentYear - this.year;
-    }
+        // returns car's age as difference between current year and car manufacturing year stored of the Car object at hand
+    } 
 
-    getDiscountedPrice() {
+    getDiscountedPrice() {  // function for price discount
         return this.getCarAge() > 10 ? this.price * 0.85 : this.price;
+        // if age of the Car object at hand is over 10 yrs, calculate 15% off its price; if not, keep the original price
     }
 
-    isEligibleForDiscount() {
+    isEligibleForDiscount() {   //function returns true if car older than 10 yrs
         return this.getCarAge() > 10;
     }
 
@@ -34,7 +41,7 @@ class Car {
 const addCar = (e) => {
     e.preventDefault();
 
-    try {
+    try {   // try-catch runtime error handling for form input when adding a car, if input not valid (input missing, Not a Number, not in range), alert user with appropriate error message
         const license = document.querySelector("#license").value.trim();
         const maker = document.querySelector("#maker").value.trim();
         const model = document.querySelector("#model").value.trim();
@@ -77,10 +84,11 @@ const displayTable = () => {
         const { license, maker, model, owner, year, color, price } = car;
 
         const carDetails = [license, maker, model, owner, year, color];
+        // destructuring car object to extract its properties as carDetails-array
 
         carDetails.forEach(detail => {
             row.insertCell(-1).textContent = detail ?? 'N/A';
-        });
+        }); // insert cell in row and display property text content in it for each car detail, if not available, display 'N/A' in cell
 
         row.insertCell(-1).textContent = `${price.toFixed(2)}€`;
 
@@ -88,7 +96,7 @@ const displayTable = () => {
             ? `$${car.getDiscountedPrice().toFixed(2)}`
             : "No Discount";
         row.insertCell(-1).textContent = discountedPrice;
-    });
+    }); //insert cell in row to display output of isEligibleForDiscount() function, if true, display calculated discount price, if false, display "No Discount" in cell
 };
 
 
@@ -99,7 +107,7 @@ const searchCar = (e) => {
 
     const searchResult = document.querySelector("#searchResult");
 
-    if (foundCar) {
+    if (foundCar) { //if search yields result, check for discount and then display all details of found car (string interpolation of p elements below) 
         const originalPrice = foundCar.price.toFixed(2);
         const discountedPrice = foundCar.isEligibleForDiscount()
             ? `$${foundCar.getDiscountedPrice().toFixed(2)}`
