@@ -38,7 +38,7 @@ const displayMessage = (message, type = "success") => {
         messageElement.textContent = "";
         messageElement.className = "";
     }, 3000);
-};
+};  // arrow function for output message to user if car added/deleted successfully, message and its type (strings) displayed in HTML element with 3 second delay after event (setTimeout() method + anonymous function)
 
 
 const addCar = (e) => {
@@ -68,19 +68,24 @@ const addCar = (e) => {
 
         const newCar = new Car(license, maker, model, owner, price, color, year);
         addCarForm.reset();
+        // reset() method to empty form input fields
         cars.push(newCar);
 
         localStorage.setItem('cars', JSON.stringify(cars));
+        // store key-value pair in local storage (key: cars, value: stringified cars-array) 
 
         displayTable();
         displayMessage("Car added successfully!");
+        // run displayMessage() function with this string to confirm to user that car added
 
     } catch (error) {
         displayMessage(error.message, "error");
+        // run displayMessage() function to error message, message type "error"
     }
 };
 
 const loadCarsFromLocalStorage = () => {
+// declaring arrow function to retrieve cars-array from local storage
     const storedCars = localStorage.getItem('cars');
     if (storedCars) {
         const parsedCars = JSON.parse(storedCars);
@@ -88,6 +93,7 @@ const loadCarsFromLocalStorage = () => {
             cars.push(new Car(carData.license, carData.maker, carData.model, carData.owner, carData.price, carData.color, carData.year));
         });
         displayTable();
+        // if there are items in the storage with key 'cars', parse the returned string and restructure it to class Car objects and their properties, then add them again to the cars array and run function to display them in HTML table   
     }
 };
 
@@ -115,18 +121,28 @@ const displayTable = () => {
         row.insertCell(-1).textContent = discountedPrice;
 
         const deleteButton = document.createElement("button");
+        // declaring variable to create button in HTML
         deleteButton.textContent = "Delete";
+        // inserting text "Delete" on button
         deleteButton.classList.add("delete");
+        // adding class property "delete" to button
         deleteButton.addEventListener("click", () => deleteCar(index));
+        // event listener for button, when clicked, will run deleteCar function 
         row.insertCell(-1).appendChild(deleteButton);
+        // inserting cell at the end of row and appending button to it
     });
 };
 
 const deleteCar = (index) => {
-    cars.splice(index, 1);
+// declaring arrow function to delete car object with given index from cars-array
+    cars.splice(index, 1); 
+    // extract car with given index, extract only one item from array
     localStorage.setItem('cars', JSON.stringify(cars));
+    // store key-value pair in local storage (key: cars, value: stringified cars-array)
     displayTable();
+    // run displayTable function to display table now without row for deleted car object
     displayMessage("Car deleted successfully!");
+    // run displayMessage function to alert user that deletion was successful
 };
 
 
@@ -160,5 +176,4 @@ const searchCar = (e) => {
 addCarForm.addEventListener("submit", addCar);
 searchCarForm.addEventListener("submit", searchCar);
 window.addEventListener('load', loadCarsFromLocalStorage);
-
-
+// event listener, when window loaded, function will run to retrieve stored car objects from local storage and display them in HTML table
